@@ -30,14 +30,14 @@ function createStudentTable() {
 
 // POST method
 
-function insertStudent(name, email, phone, address) {
+function insertStudent(name, email, phone, address, password, confirmPassword) {
   return new Promise((resolve, reject) => {
     const insertStudentQuery = `
       INSERT INTO students (name, email, phone, address, password, confirmPassword)
       VALUES (?, ?, ?, ?, ?, ?)
     `;
 
-    connection.query(insertStudentQuery, [name, email, phone, address], (err, results) => {
+    connection.query(insertStudentQuery, [name, email, phone, address, password, confirmPassword], (err, results) => {
       if (err) {
         console.error('Error inserting student data:', err);
         reject(err);
