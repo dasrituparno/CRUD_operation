@@ -194,7 +194,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Validation from './RegistrationValidation';
-import './styles.css';
+
 import axios from 'axios';
 
 function RegistrationForm() {
@@ -287,9 +287,7 @@ function RegistrationForm() {
 
           <button type='submit' >Register</button>
 
-          <Link to='/' className='link'>
-            Login
-          </Link>
+          <Link to='/' className='link'> Login </Link>
         </form>
       </div>
     </div>
