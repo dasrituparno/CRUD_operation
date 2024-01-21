@@ -191,10 +191,11 @@
 
 // RegistrationForm.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Validation from './RegistrationValidation';
 import './styles.css';
+import axios from 'axios';
 
 function RegistrationForm() {
   const [values, setValues] = useState({
@@ -215,19 +216,23 @@ function RegistrationForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors(Validation(values));
-  };
-
-  useEffect(() => {
     if (
       errors.name === '' &&
       errors.email === '' &&
       errors.number === '' &&
       errors.password === '' &&
       errors.confirmpassword === ''
-    ) {
-      navigate('/home');
+    ){
+      axios.post('',values)
+      .then(res=> {
+        navigate("./");
+      })
+      .catch(err => console.log(err));
+
     }
-  }, [errors]);
+  };
+
+
 
   return (
     <div>
@@ -280,7 +285,7 @@ function RegistrationForm() {
             <span className='text-danger'>{errors.confirmpassword}</span>
           )}
 
-          <button type='submit' onClick={() => navigate('/home')}>Register</button>
+          <button type='submit' >Register</button>
 
           <Link to='/' className='link'>
             Login

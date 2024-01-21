@@ -43,9 +43,9 @@
 // }
 
 // export default LoginPage;
-
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Validation from './LoginValidation';
 import './index.css';
 
@@ -59,11 +59,24 @@ function LoginPage() {
     setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setErrors(Validation(values));
+    if (
+      errors.email === '' &&
+      errors.password === '' 
+     
+     ){
+      axios.post('',values)
+      .then(res=> {
+        navigate("./home");
+      })
+      .catch(err => console.log(err));
+
+    }
   };
 
   return (

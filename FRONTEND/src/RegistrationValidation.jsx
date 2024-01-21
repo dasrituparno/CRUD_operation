@@ -1,45 +1,48 @@
-function Validation(values){
-    let error= {}
-
+function Validation(values) {
+    let errors = {};
+  
     const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-    
-    if (values.name ===""){
-        error.mail = "name should not be empty"
-    } else{
-        error.name=""
+  
+    if (values.name === "") {
+      errors.name = "Name should not be empty";
+    } else {
+      errors.name = "";
     }
-    
-    if (values.email ===""){
-        error.mail = "email should not be empty"
-    } else if(!email_pattern.test(values.email)){
-        error.email="invalid email"
-    }else{
-        error.email=""
+  
+    if (values.email === "") {
+      errors.email = "Email should not be empty";
+    } else if (!email_pattern.test(values.email)) {
+      errors.email = "Invalid email";
+    } else {
+      errors.email = "";
     }
-    if (values.number ===""){
-        error.number = "number should not be empty"
-
-    }else{
-        error.number=""
+  
+    if (values.number === "") {
+      errors.number = "Number should not be empty";
+    } else {
+      errors.number = "";
     }
-    if (values.password ===""){
-        error.mail = "password should not be empty"
-    } else if(!password_pattern.test(values.password)){
-        error.password="invalid password"
-    }else{
-        error.password=""
+  
+    if (values.password === "") {
+      errors.password = "Password should not be empty";
+    } else if (!password_pattern.test(values.password)) {
+      errors.password = "Invalid password";
+    } else {
+      errors.password = "";
     }
-    if (values.confirmpassword ===""){
-        error.mail = "not matching"
-    } else if(!password_pattern.test(values.password)){
-        error.password="invalid password"
-    }else{
-        error.password=""
+  
+    if (values.confirmpassword === "") {
+      errors.confirmpassword = "Confirmation password should not be empty";
+    } else if (values.confirmpassword !== values.password) {
+      errors.confirmpassword = "Passwords do not match";
+    } else {
+      errors.confirmpassword = "";
     }
-    return error;
-
-
-}
-export default Validation;
+  
+    return errors;
+  }
+  
+  export default Validation;
+  
+  
