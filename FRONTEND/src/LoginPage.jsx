@@ -47,7 +47,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Validation from './LoginValidation';
-import './index.css';
+import "./LoginPage.css";
 
 function LoginPage() {
   const [values, setValues] = useState({
@@ -70,7 +70,7 @@ function LoginPage() {
       errors.password === '' 
      
      ){
-      axios.post('',values)
+      axios.post('"localhost:5000/register',values)
       .then(res=> {
         navigate("./home");
       })

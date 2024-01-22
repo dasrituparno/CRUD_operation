@@ -11,7 +11,7 @@ const HomePage = () => {
     { id: 3, serialNumber: 'SN003', productName: 'Product 3' },
     { id: 4, serialNumber: 'SN004', productName: 'Product 4' },
     { id: 5, serialNumber: 'SN005', productName: 'Product 5' },
-    // Add more products as needed
+  
   ]);
 
   const indexOfLastProduct = currentPage * productsPerPage;

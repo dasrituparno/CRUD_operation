@@ -223,7 +223,7 @@ function RegistrationForm() {
       errors.password === '' &&
       errors.confirmpassword === ''
     ){
-      axios.post('',values)
+      axios.post('"localhost:5000/register',values)
       .then(res=> {
         navigate("./");
       })
@@ -264,6 +264,13 @@ function RegistrationForm() {
             onChange={handleInput}
           />
           {errors.number && <span className='text-danger'>{errors.number}</span>}
+          <label htmlFor='address'>Address</label>
+          <input
+            type='address'
+            placeholder='Enter Your Address'
+            name='address'
+            onChange={handleInput}
+          />
 
           <label htmlFor='password'>Password</label>
           <input
