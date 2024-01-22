@@ -2,7 +2,7 @@ import React from 'react';
 import LoginPage from "./LoginPage";
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import RegistrationForm from './RegistrationForm';
-import HomePage from './Homepage.jsx';
+import HomePage from './HomePage.jsx';
 
 function App(){
   return(

@@ -1,64 +1,111 @@
-/* AddProductModal.css (Assuming you have a separate CSS file)
-
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button.secondary {
+  background-color: #d9534f;
+}
+
+button.secondary:hover {
+  background-color: #c9302c;
+}
+
+form {
+  margin-bottom: 10px;
+}
+
+.divider {
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
   .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
     padding: 10px;
-    text-align: left;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  form {
+    margin-bottom: 10px;
   }
   
-  th {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  tbody tr:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .actions button {
-    margin-right: 5px;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .pagination button {
-    margin: 0 5px;
-  }
-  
-  /* AddProductModal.css (Assuming you have a separate CSS file) */
+}
+
+.product-name-field {
+  margin-top:  40px; ;
+  margin-bottom: 10px; /* Add your preferred styling here */
+}
+
+.product-name-field label {
+  display: block; /* To place the label on a new line */
+  margin-bottom: 5px; /* Add your preferred margin */
+}
+
+.product-name-field input {
+  width: 30%; /* Make the input field take the full width of its container */
+  padding: 5px; /* Add your preferred padding */
+  box-sizing: border-box;
+  /* Add any additional styling you want for the input field */
+}
+
+
+
  

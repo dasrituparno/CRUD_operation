@@ -47,7 +47,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Validation from './LoginValidation';
-import './index.css';
+import "./LoginPage.css";
 
 function LoginPage() {
   const [values, setValues] = useState({
@@ -70,18 +70,24 @@ function LoginPage() {
       errors.password === '' 
      
      ){
-      axios.post('',values)
-      .then(res=> {
-        navigate("./home");
+      axios.post('http://localhost:5000/login',values)
+      .then((res) => {
+        console.log('Login Response:', res.data);
+        navigate('/home'); // Redirect to products page after successful login
       })
+
       .catch(err => console.log(err));
 
     }
   };
 
   return (
+<>
+
     <div className='container'>
+    
       <div className='form-container'>
+      <h1> LOGIN</h1>
         <form action='' onSubmit={handleSubmit}>
           <div className='form-group'>
             <label htmlFor='email' className='label'>Email</label>
@@ -111,6 +117,7 @@ function LoginPage() {
         </form>
       </div>
     </div>
+</>
   );
 }
 
