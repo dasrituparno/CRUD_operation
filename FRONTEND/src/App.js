@@ -2,7 +2,7 @@ import React from 'react';
 import LoginPage from "./LoginPage";
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import RegistrationForm from './RegistrationForm';
-import HomePage from './Homepage.jsx';
+import HomePage from './HomePage.jsx';
 
 function App(){
   return(
@@ -10,7 +10,7 @@ function App(){
     <Routes>
       <Route path="/" element={<LoginPage/>}></Route>
       <Route path="/signup" element={<RegistrationForm/>}></Route>
-      <Route path="/home" element={<Homepage/>}></Route>
+      <Route path="/home" element={<HomePage/>}></Route>
 
     </Routes>
   </BrowserRouter>

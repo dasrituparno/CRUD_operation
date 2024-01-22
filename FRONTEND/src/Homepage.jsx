@@ -1,25 +1,38 @@
 
-
 import React, { useState } from 'react';
+import "./HomePage.css";
 
 const HomePage = () => {
-  const productsPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([
-    { id: 1, serialNumber: 'SN001', productName: 'Product 1' },
-    { id: 2, serialNumber: 'SN002', productName: 'Product 2' },
-    { id: 3, serialNumber: 'SN003', productName: 'Product 3' },
-    { id: 4, serialNumber: 'SN004', productName: 'Product 4' },
-    { id: 5, serialNumber: 'SN005', productName: 'Product 5' },
-  
+    { id: 1, productName: 'Product 1' },
+    { id: 2, productName: 'Product 2' },
+    { id: 3, productName: 'Product 3' },
+    { id: 4, productName: 'Product 4' },
+    { id: 5, productName: 'Product 5' },
   ]);
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const [newProduct, setNewProduct] = useState({ id: null, productName: '' });
+  const [editingProductId, setEditingProductId] = useState(null);
 
   const handleEdit = (productId) => {
-    console.log(`Edit product with id ${productId}`);
+    setEditingProductId(productId);
+    const productToEdit = products.find((product) => product.id === productId);
+    setNewProduct({ ...productToEdit });
+  };
+
+  const handleSaveEdit = () => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === newProduct.id ? { ...product, productName: newProduct.productName } : product
+      )
+    );
+    setEditingProductId(null);
+    setNewProduct({ id: null, productName: '' });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProductId(null);
+    setNewProduct({ id: null, productName: '' });
   };
 
   const handleDelete = (productId) => {
@@ -27,58 +40,83 @@ const HomePage = () => {
     setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
   };
 
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => (prevPage < Math.ceil(products.length / productsPerPage) ? prevPage + 1 : prevPage));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
-  };
-
   const handleAddProduct = () => {
-    // Implement the logic to show the add product modal or navigate to the add product page
-    // For now, just log a message
-    console.log("Add Product functionality not implemented yet.");
+    // Add the new product to the state with a new id
+    setProducts((prevProducts) => [
+      ...prevProducts,
+      { id: prevProducts.length + 1, productName: newProduct.productName },
+    ]);
+    // Clear the form field
+    setNewProduct({ id: null, productName: '' });
   };
 
   return (
     <>
-    <button onClick={handleAddProduct}>Add Product</button>
-    <div>
-      <h1>Product List</h1>
-      
-
-      <table>
-        <thead>
-          <tr>
-            <th>Serial Number</th>
-            <th>Product Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentProducts.map((product) => (
-            <tr key={product.id}>
-              <td>{product.serialNumber}</td>
-              <td>{product.productName}</td>
-              <td>
-                <button onClick={() => handleEdit(product.id)}>Edit</button>
-                <button onClick={() => handleDelete(product.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
       <div>
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <button onClick={handleNextPage} disabled={indexOfLastProduct >= products.length}>
-          Next
-        </button>
+        
+        <form>
+          <div className='product-name-field'>
+            <label htmlFor="productName">Product Name:</label>
+            <input
+              type="text"
+              id="productName"
+              value={newProduct.productName}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, productName: e.target.value })
+              }
+            />
+          </div>
+          <button type="button" onClick={handleAddProduct}>
+            Add Product
+          </button>
+        </form>
       </div>
-    </div>
-  </>
+
+      <div>
+        <h1>Product List</h1>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td>{product.id}</td>
+                <td>
+                  {editingProductId === product.id ? (
+                    <input
+                      type="text"
+                      value={newProduct.productName}
+                      onChange={(e) => setNewProduct({ ...newProduct, productName: e.target.value })}
+                    />
+                  ) : (
+                    product.productName
+                  )}
+                </td>
+                <td>
+                  {editingProductId === product.id ? (
+                    <>
+                      <button onClick={handleSaveEdit}>Save</button>
+                      <button onClick={handleCancelEdit}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={() => handleEdit(product.id)}>Edit</button>
+                      <button onClick={() => handleDelete(product.id)}>Delete</button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 
