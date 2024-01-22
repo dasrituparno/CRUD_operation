@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 5000;
 const studentsModel = require("./models/students");
 const productsModel = require("./models/products");
@@ -10,6 +11,7 @@ require("dotenv").config();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 // Create the student and product tables if not exists
 studentsModel.createStudentTable();

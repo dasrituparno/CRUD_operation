@@ -70,10 +70,12 @@ function LoginPage() {
       errors.password === '' 
      
      ){
-      axios.post('"localhost:5000/register',values)
-      .then(res=> {
-        navigate("./home");
+      axios.post('http://localhost:5000/login',values)
+      .then((res) => {
+        console.log('Login Response:', res.data);
+        navigate('/home'); // Redirect to products page after successful login
       })
+
       .catch(err => console.log(err));
 
     }
