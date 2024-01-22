@@ -37,7 +37,7 @@ app.post("/register", async (req, res) => {
 
     await studentsModel.createStudentTable(); // Wait for student table creation
 
-    await studentsModel.insertStudent(name, email, phone, address,confirmPassword , hashedPassword); // Wait for student data insertion
+    await studentsModel.insertStudent(name, email, phone, address, hashedPassword, hashedPassword); // Wait for student data insertion
 
     // Redirect to the login page after successful registration
     res.status(201).send({ name, email, phone, address, redirectTo: "/login" });
@@ -47,13 +47,19 @@ app.post("/register", async (req, res) => {
   }
 });
 
+
 // Login endpoint
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Assuming you have a function in studentsModel to check login details
+    console.log('Received login request for email:', email);
+    console.log('Received login request with password:', password);
+
+    // Logging added for debugging
     const user = await studentsModel.checkLoginDetails(email, password);
+
+    console.log('checkLoginDetails result:', user);
 
     if (user) {
       // Generate a JWT token and set it as a cookie
@@ -73,6 +79,7 @@ app.post("/login", async (req, res) => {
     res.status(500).send(e.message || e);
   }
 });
+
 
 // Products endpoints
 app.get("/products", async (req, res) => {
