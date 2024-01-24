@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import "./HomePage.css";
 
@@ -66,14 +65,12 @@ const HomePage = () => {
               }
             />
           </div>
-          <button type="button" onClick={handleAddProduct}>
-            Add Product
-          </button>
+          <button type="button" onClick={handleAddProduct} className="add-product-button" >Add Product</button>
         </form>
       </div>
 
       <div>
-        <h1>Product List</h1>
+        <h1 className='Heading'>Product List</h1>
 
         <table>
           <thead>
@@ -107,7 +104,7 @@ const HomePage = () => {
                   ) : (
                     <>
                       <button onClick={() => handleEdit(product.id)}>Edit</button>
-                      <button onClick={() => handleDelete(product.id)}>Delete</button>
+                      <button className='delete' onClick={() => handleDelete(product.id)}>Delete</button>
                     </>
                   )}
                 </td>
