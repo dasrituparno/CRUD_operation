@@ -1,16 +1,18 @@
-// RegistrationForm.jsx
+
+
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Validation from './RegistrationValidation';
+
 import './RegistrationForm.css';
-import axios from 'axios';
 
 function RegistrationForm() {
   const [values, setValues] = useState({
     name: '',
     email: '',
     number: '',
+    address: '',
     password: '',
     confirmpassword: '',
   });
@@ -22,7 +24,7 @@ function RegistrationForm() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setErrors(Validation(values));
 
@@ -30,88 +32,104 @@ function RegistrationForm() {
       errors.name === '' &&
       errors.email === '' &&
       errors.number === '' &&
+      errors.address === '' &&
       errors.password === '' &&
       errors.confirmpassword === ''
     ) {
-      // Use Axios to send registration data to the backend
-      axios.post('http://localhost:5000/register', values)
-        .then((res) => {
-          console.log('Registration Response:', res.data);
-          navigate('/'); // Redirect to login page after successful registration
-        })
-        .catch(err => console.log(err));
+      try {
+        const response = await fetch('http://localhost:5000/register', {
+          method: 'POST',
+          headers: {
+          ContentType: 'application/json',
+          },
+          body: JSON.stringify(values),
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error('Registration failed');
+        }
+
+        const data = await response.json();
+
+        console.log('Registration Response:', data);
+        navigate('/'); // Redirect to login page after successful registration
+      } catch (err) {
+        console.error('Registration failed:', err);
+      }
     }
   };
 
   return (
     <div>
-      <div className='container'>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='name'>Name</label>
-          <input
-            type='name'
-            placeholder='Enter Your Name'
-            name='name'
-            onChange={handleInput}
-          />
-          {errors.name && <span className='text-danger'>{errors.name}</span>}
+<div className='container'>
+  <form onSubmit={handleSubmit}>
+  <h1> Sign Up</h1>
+    <label htmlFor='name'>Name</label>
+    <input
+      type='name'
+      placeholder='Enter Your Name'
+      name='name'
+      onChange={handleInput}
+    />
+    {errors.name && <span className='text-danger'>{errors.name}</span>}
 
-          <label htmlFor='email'>Email</label>
-          <input
-            type='email'
-            placeholder='Enter Email'
-            name='email'
-            onChange={handleInput}
-          />
-          {errors.email && <span className='text-danger'>{errors.email}</span>}
+    <label htmlFor='email'>Email</label>
+    <input
+      type='email'
+      placeholder='Enter Email'
+      name='email'
+      onChange={handleInput}
+    />
+    {errors.email && <span className='text-danger'>{errors.email}</span>}
 
-          <label htmlFor='number'>Mobile</label>
-          <input
-            type='number'
-            placeholder='Enter Your Mobile No'
-            name='number'
-            onChange={handleInput}
-          />
-          {errors.number && <span className='text-danger'>{errors.number}</span>}
+    <label htmlFor='number'>Mobile</label>
+    <input
+      type='number'
+      placeholder='Enter Your Mobile No'
+      name='number'
+      onChange={handleInput}
+    />
+    {errors.number && <span className='text-danger'>{errors.number}</span>}
 
-          <label htmlFor='address'>Address</label>
-          <input
-            type='address'
-            placeholder='Enter Your Address'
-            name='address'
-            onChange={handleInput}
-          />
+    <label htmlFor='address'>Address</label>
+    <input
+      type='address'
+      placeholder='Enter Your Address'
+      name='address'
+      onChange={handleInput}
+    />
+    {errors.address && <span className='text-danger'>{errors.address}</span>}
 
-          <label htmlFor='password'>Password</label>
-          <input
-            type='password'
-            placeholder='Enter Password'
-            name='password'
-            onChange={handleInput}
-          />
-          {errors.password && <span className='text-danger'>{errors.password}</span>}
+    <label htmlFor='password'>Password</label>
+    <input
+      type='password'
+      placeholder='Enter Password'
+      name='password'
+      onChange={handleInput}
+    />
+    {errors.password && <span className='text-danger'>{errors.password}</span>}
 
-          <label htmlFor='confirmpassword'>Confirm Password</label>
-          <input
-            type='password'
-            placeholder='Confirm Your Password'
-            name='confirmpassword'
-            onChange={handleInput}
-          />
-          {errors.confirmpassword && (
-            <span className='text-danger'>{errors.confirmpassword}</span>
-          )}
+    <label htmlFor='confirmpassword'>Confirm Password</label>
+    <input
+      type='password'
+      placeholder='Confirm Your Password'
+      name='confirmpassword'
+      onChange={handleInput}
+    />
+    {errors.confirmpassword && (
+      <span className='text-danger'>{errors.confirmpassword}</span>
+    )}
 
-          <button type='submit'>Register</button>
+    <button type='submit'>Sign Up</button>
 
-          <Link to='/' className='link'>
-            {' '}
-            Login{' '}
-          </Link>
-        </form>
-      </div>
-    </div>
-  );
+    <Link to='/' className='link'> Login</Link>
+  </form>
+</div>
+</div>
+);
+
 }
 
 export default RegistrationForm;
+

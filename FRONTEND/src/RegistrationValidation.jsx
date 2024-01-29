@@ -23,6 +23,11 @@ function Validation(values) {
     } else {
       errors.number = "";
     }
+    if (values.address === "") {
+      errors.address = "enter your address";
+    } else {
+      errors.address = "";
+    }
   
     if (values.password === "") {
       errors.password = "Password should not be empty";

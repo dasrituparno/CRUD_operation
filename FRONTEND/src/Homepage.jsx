@@ -4,11 +4,11 @@ import "./HomePage.css";
 
 const HomePage = () => {
   const [products, setProducts] = useState([
-    { id: 1, productName: 'Product 1' },
-    { id: 2, productName: 'Product 2' },
-    { id: 3, productName: 'Product 3' },
-    { id: 4, productName: 'Product 4' },
-    { id: 5, productName: 'Product 5' },
+    { id: 1, productName: 'Product 1', photo: null, isPhotoSelected: false },
+    { id: 2, productName: 'Product 2', photo: null, isPhotoSelected: false },
+    { id: 3, productName: 'Product 3', photo: null, isPhotoSelected: false },
+    { id: 4, productName: 'Product 4', photo: null, isPhotoSelected: false },
+    { id: 5, productName: 'Product 5', photo: null, isPhotoSelected: false },
   ]);
 
   const [newProduct, setNewProduct] = useState({ id: null, productName: '' });
@@ -23,7 +23,9 @@ const HomePage = () => {
   const handleSaveEdit = () => {
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product.id === newProduct.id ? { ...product, productName: newProduct.productName } : product
+        product.id === newProduct.id
+          ? { ...newProduct, isPhotoSelected: !!newProduct.photo }
+          : product
       )
     );
     setEditingProductId(null);
@@ -44,16 +46,20 @@ const HomePage = () => {
     // Add the new product to the state with a new id
     setProducts((prevProducts) => [
       ...prevProducts,
-      { id: prevProducts.length + 1, productName: newProduct.productName },
+      { id: prevProducts.length + 1, productName: newProduct.productName, photo: null, isPhotoSelected: false },
     ]);
     // Clear the form field
     setNewProduct({ id: null, productName: '' });
   };
 
+  const handlePhotoChange = (event) => {
+    const file = event.target.files[0];
+    setNewProduct({ ...newProduct, photo: file });
+  };
+
   return (
     <>
       <div>
-        
         <form>
           <div className='product-name-field'>
             <label htmlFor="productName">Product Name:</label>
@@ -66,20 +72,19 @@ const HomePage = () => {
               }
             />
           </div>
-          <button type="button" onClick={handleAddProduct}>
-            Add Product
-          </button>
+          <button type="button" onClick={handleAddProduct} className="add-product-button" >Add Product</button>
         </form>
       </div>
 
       <div>
-        <h1>Product List</h1>
+        <h1 className='Heading'>Product List</h1>
 
         <table>
           <thead>
             <tr>
               <th>ID</th>
               <th>Product Name</th>
+              <th>Product Photo</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -100,6 +105,18 @@ const HomePage = () => {
                 </td>
                 <td>
                   {editingProductId === product.id ? (
+                    <input
+                      type="file"
+                      onChange={handlePhotoChange}
+                    />
+                  ) : (
+                    <div className="product-photo">
+                      {product.photo && <img src={URL.createObjectURL(product.photo)} alt={product.productName} />}
+                    </div>
+                  )}
+                </td>
+                <td>
+                  {editingProductId === product.id ? (
                     <>
                       <button onClick={handleSaveEdit}>Save</button>
                       <button onClick={handleCancelEdit}>Cancel</button>
@@ -107,7 +124,7 @@ const HomePage = () => {
                   ) : (
                     <>
                       <button onClick={() => handleEdit(product.id)}>Edit</button>
-                      <button onClick={() => handleDelete(product.id)}>Delete</button>
+                      <button className='delete' onClick={() => handleDelete(product.id)}>Delete</button>
                     </>
                   )}
                 </td>
@@ -121,3 +138,7 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+
+

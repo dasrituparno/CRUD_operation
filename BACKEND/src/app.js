@@ -410,8 +410,7 @@ require("dotenv").config();
 
 app.use(express.json());
 app.use(cookieParser());
-
-app.use(cors()); // Enable CORS
+app.use(cors());
 
 // Create the student and product tables if not exists
 studentsModel.createStudentTable();
