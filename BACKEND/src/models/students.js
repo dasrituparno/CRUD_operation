@@ -13,8 +13,8 @@ function createStudentTable() {
         email VARCHAR(255) NOT NULL UNIQUE,
         phone VARCHAR(10),
         address TEXT NOT NULL,
-        password VARCHAR(8) NOT NULL,
-        confirmPassword VARCHAR(8) NOT NULL
+        password VARCHAR(255) NOT NULL,
+        confirmPassword VARCHAR(255) NOT NULL
       )
     `;
 
@@ -255,49 +255,47 @@ function getStudents() {
   // }
 
 
-async function checkLoginDetails(email, password) {
-  return new Promise(async (resolve, reject) => {
-    console.log('Checking login details for:', email);
-    const checkLoginDetailsQuery = 'SELECT * FROM students WHERE email = ?';
-
-    connection.query(checkLoginDetailsQuery, [email], async (err, results) => {
-      if (err) {
-        console.error('Error checking login details:', err);
-        reject(err);
-      } else {
-        console.log('Query results:', results);
-
-        if (results.length > 0) {
-          // User found, check password
-          const user = results[0];
-
-          const passwordMatch = await bcrypt.compare(password, user.confirmPassword);
-
-
-          // const passwordMatch = await bcrypt.compare(password, user.password);
-
-          if (passwordMatch) {
-            // Passwords match, generate and return a token
-            const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, {
-              expiresIn: '1h', // Token expires in 1 hour
-            });
-
-            console.log('Login successful. Token:', token);
-            resolve({ user, token });
+  async function checkLoginDetails(email, password) {
+    return new Promise(async (resolve, reject) => {
+      console.log('Checking login details for:', email);
+      const checkLoginDetailsQuery = 'SELECT * FROM students WHERE email = ?';
+  
+      connection.query(checkLoginDetailsQuery, [email], async (err, results) => {
+        if (err) {
+          console.error('Error checking login details:', err);
+          reject(err);
+        } else {
+          console.log('Query results:', results);
+  
+          if (results.length > 0) {
+            // User found, check password
+            const user = results[0];
+  
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            
+            if (passwordMatch) {
+              // Passwords match, generate and return a token
+              const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, {
+                expiresIn: '1h', // Token expires in 1 hour
+              });
+  
+              console.log('Login successful. Token:', token);
+              resolve({ user, token });
+            } else {
+              // Passwords do not match
+              console.log('Invalid password');
+              resolve(null);
+            }
           } else {
-            // Passwords do not match
-            console.log('Invalid password');
+            // No matching user found
+            console.log('User not found');
             resolve(null);
           }
-        } else {
-          // No matching user found
-          console.log('User not found');
-          resolve(null);
         }
-      }
+      });
     });
-  });
-}
+  }
+  
   
   
   
