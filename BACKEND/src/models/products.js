@@ -182,23 +182,6 @@ function patchProduct(id, updates) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // DELETE method for products
 function deleteProduct(id) {
   return new Promise((resolve, reject) => {
