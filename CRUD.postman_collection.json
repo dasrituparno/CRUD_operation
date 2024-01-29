@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"TEST2 Das\",\r\n    \"email\": \"TEST2@xyz.com\",\r\n    \"phone\": 1234567892,\r\n    \"address\": \"Calcutta\",\r\n    \"password\" : \"ab12\",\r\n    \"confirmPassword\" : \"ab12\"\r\n}",
+					"raw": "{\r\n    \"name\" : \"TEST1 Das\",\r\n    \"email\": \"TEST1@xyz.com\",\r\n    \"phone\": 1234567890,\r\n    \"address\": \"Calcutta\",\r\n    \"password\" : \"ab12\",\r\n    \"confirmPassword\" : \"ab12\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -43,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"TEST4 Das\",\r\n    \"email\": \"TEST4@xyz.com\",\r\n    \"phone\": 1234567892,\r\n    \"address\": \"Calcutta\"   \r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -70,7 +70,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"TESTING\"\r\n}",
+					"raw": "{\r\n    \"name\": \"TESTING13\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,14 +78,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/students/6",
+					"raw": "localhost:5000/students/13",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"students",
-						"6"
+						"13"
 					]
 				}
 			},
@@ -97,14 +97,41 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:5000/students/1",
+					"raw": "localhost:5000/students/13",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"students",
-						"1"
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"TEST16@xyz.com\",\r\n    \"password\" : \"ab12\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"login"
 					]
 				}
 			},
@@ -114,15 +141,35 @@
 			"name": "insert products",
 			"request": {
 				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+				"header": [
+					{
+						"key": "content-type",
+						"value": "multipart/form-data",
+						"type": "text"
 					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_name",
+							"value": "Dot Graph",
+							"contentType": "application/json",
+							"type": "text"
+						},
+						{
+							"key": "product_description",
+							"value": "Data Science",
+							"contentType": "application/json",
+							"type": "text"
+						},
+						{
+							"key": "productImage",
+							"contentType": "image/png",
+							"type": "file",
+							"src": "/C:/Users/dasri/OneDrive/Pictures/Screenshots/Screenshot_20221026_225733.png"
+						}
+					]
 				},
 				"url": {
 					"raw": "localhost:5000/products",
@@ -139,9 +186,52 @@
 		},
 		{
 			"name": "Read Products",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/products",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Products By ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/products/4",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"4"
+					]
+				}
 			},
 			"response": []
 		},
@@ -151,23 +241,79 @@
 				"method": "PATCH",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"product_name\" : \"Book0\",\r\n    \"products_description\" : \"Novel\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_name",
+							"value": "Bar graph",
+							"contentType": "application/json",
+							"type": "text"
+						},
+						{
+							"key": "product_description",
+							"value": "Bar graph",
+							"contentType": "application/json",
+							"type": "text"
+						},
+						{
+							"key": "product_image",
+							"contentType": "image/png",
+							"type": "file",
+							"src": "/C:/Users/dasri/OneDrive/Pictures/Screenshots/Screenshot (15).png"
 						}
-					}
+					]
 				},
 				"url": {
-					"raw": "localhost:5000/products/1",
+					"raw": "localhost:5000/products/4",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"products",
-						"1"
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update products",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "product_name",
+							"value": "Histogram1",
+							"contentType": "application/json",
+							"type": "text"
+						},
+						{
+							"key": "product_description",
+							"value": "Data Science",
+							"contentType": "application/json",
+							"type": "text"
+						},
+						{
+							"key": "product_Image",
+							"contentType": "image/png",
+							"type": "file",
+							"src": "/C:/Users/dasri/OneDrive/Pictures/Screenshots/Screenshot 2024-01-20 134009.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/products/4",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"4"
 					]
 				}
 			},
@@ -176,8 +322,28 @@
 		{
 			"name": "Delete products",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/products/3",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"3"
+					]
+				}
 			},
 			"response": []
 		}

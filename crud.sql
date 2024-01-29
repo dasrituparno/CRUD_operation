@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2024 at 05:59 PM
+-- Generation Time: Jan 29, 2024 at 11:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,15 +30,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `product_name` varchar(255) NOT NULL,
-  `product_description` text NOT NULL
+  `product_description` text NOT NULL,
+  `product_image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_name`, `product_description`) VALUES
-(1, 'Book0', 'Novel');
+INSERT INTO `products` (`id`, `product_name`, `product_description`, `product_image`) VALUES
+(5, 'Dot Graph', 'Data Science', '1706180871532-Screenshot_20221026_225733.png');
 
 -- --------------------------------------------------------
 
@@ -52,8 +53,8 @@ CREATE TABLE `students` (
   `email` varchar(255) NOT NULL,
   `phone` varchar(10) DEFAULT NULL,
   `address` text NOT NULL,
-  `password` varchar(8) NOT NULL,
-  `confirmPassword` varchar(8) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `confirmPassword` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -61,12 +62,8 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `name`, `email`, `phone`, `address`, `password`, `confirmPassword`) VALUES
-(1, 'TEST6 Das', 'TEST6@xyz.com', '1234567892', 'Calcutta', 'ab12', 'ab12'),
-(2, 'TEST7 Das', 'TEST7@xyz.com', '1234567892', 'Calcutta', 'ab12', 'ab12'),
-(3, 'TEST8 Das', 'TEST8@xyz.com', '1234567892', 'Calcutta', 'ab12', 'ab12'),
-(4, 'TEST9 Das', 'TEST9@xyz.com', '1234567892', 'Calcutta', 'ab12', 'ab12'),
-(5, 'TEST1 Das', 'TEST1@xyz.com', '1234567892', 'Calcutta', 'ab12', 'ab12'),
-(6, 'TEST2 Das', 'TEST2@xyz.com', '1234567892', 'Calcutta', 'ab12', '$2b$10$C');
+(13, 'TESTING13', 'TEST16@xyz.com', '1234567890', 'Calcutta', '$2b$10$cS3aGf9mzuQa/W8SGVNwqO90E/1v.Kw2WiO7B3YBFnF9GjsW2mhd.', '$2b$10$cS3aGf9mzuQa/W8SGVNwqO90E/1v.Kw2WiO7B3YBFnF9GjsW2mhd.'),
+(14, 'TEST1 Das', 'TEST1@xyz.com', '1234567890', 'Calcutta', '$2b$10$ltAqVHVofUoBUO92cpJJFeaXXPrh.yUemC3O2oDodxMe0.0x/jt5S', '$2b$10$ltAqVHVofUoBUO92cpJJFeaXXPrh.yUemC3O2oDodxMe0.0x/jt5S');
 
 --
 -- Indexes for dumped tables
@@ -93,13 +90,13 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

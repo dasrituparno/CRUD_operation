@@ -6,7 +6,8 @@ function createProductTable() {
       CREATE TABLE IF NOT EXISTS products (
         id INT AUTO_INCREMENT PRIMARY KEY,
         product_name VARCHAR(255) NOT NULL,
-        product_description TEXT NOT NULL
+        product_description TEXT NOT NULL,
+        product_image VARCHAR(255) NOT NULL
       )
     `;
 
@@ -22,16 +23,18 @@ function createProductTable() {
   });
 }
 
+
+
 // POST method for products
 
-function insertProduct(productName, productDescription) {
+function insertProduct(productName, productDescription, productImage) {
   return new Promise((resolve, reject) => {
     const insertProductQuery = `
-      INSERT INTO products (product_name, product_description)
-      VALUES (?, ?)
+      INSERT INTO products (product_name, product_description, product_image)
+      VALUES (?, ?, ?)
     `;
 
-    connection.query(insertProductQuery, [productName, productDescription], (err, results) => {
+    connection.query(insertProductQuery, [productName, productDescription, productImage], (err, results) => {
       if (err) {
         console.error('Error inserting product data:', err);
         reject(err);
@@ -54,25 +57,48 @@ function getProducts() {
         console.error('Error retrieving products:', err);
         reject(err);
       } else {
-        resolve(results);
+        resolve(results); 
       }
     });
   });
 }
 
-// PUT method for products
+// GET method for retrieving a product by ID
+function getProductById(id) {
+  return new Promise((resolve, reject) => {
+    const getProductByIdQuery = 'SELECT * FROM products WHERE id = ?'; // Modified query to select a product by its ID
 
-function updateProduct(id, productName, productDescription) {
+    connection.query(getProductByIdQuery, [id], (err, results) => {
+      if (err) {
+        console.error(`Error retrieving product with ID ${id}:`, err);
+        reject(err);
+      } else {
+        if (results.length > 0) {
+          resolve(results[0]); // Resolve with the first (and only) result
+        } else {
+          resolve(null); // Resolve with null if no product with the specified ID is found
+        }
+      }
+    });
+  });
+}
+
+
+// PUT method for products
+function updateProduct(id, productName, productDescription, productImage) {
   return new Promise((resolve, reject) => {
     const updateProductQuery = `
       UPDATE products
-      SET product_name = ?, product_description = ?
+      SET product_name = ?, product_description = ?, product_image = ?
       WHERE id = ?
     `;
 
+    // Check if productImage is provided, otherwise set it to null or some default value
+    const image = productImage ? productImage.filename : null;
+
     connection.query(
       updateProductQuery,
-      [productName, productDescription, id],
+      [productName, productDescription, image, id], // Use image variable
       (err, results) => {
         if (err) {
           console.error('Error updating product data:', err);
@@ -86,8 +112,8 @@ function updateProduct(id, productName, productDescription) {
   });
 }
 
-// PATCH method for products
 
+// PATCH method for products
 function patchProduct(id, updates) {
   return new Promise((resolve, reject) => {
     // Build SET clause for partial update
@@ -103,7 +129,7 @@ function patchProduct(id, updates) {
 
     connection.query(
       patchProductQuery,
-      [...Object.values(updates), id],
+      [...Object.values(updates), id], // Include ID at the end
       (err, results) => {
         if (err) {
           console.error('Error patching product data:', err);
@@ -117,8 +143,46 @@ function patchProduct(id, updates) {
   });
 }
 
-// DELETE method for products
 
+
+// // PATCH method for products
+// function patchProduct(id, updates) {
+//   return new Promise((resolve, reject) => {
+//     console.log('Received Updates:', updates);
+
+//     const { product_name, product_description, product_image } = updates;
+    
+//     const patchProductQuery = `
+//       UPDATE products
+//       SET product_name = ? , product_description = ?, product_image = ?
+//       WHERE id = ?
+//     `;
+
+//     const values = [product_name, product_description, product_image, id];
+
+//     console.log("patchProductQuery:", patchProductQuery)
+//     console.log("values:", values)
+
+//     connection.query(
+//       patchProductQuery,
+//       values,
+//       (err, results) => {
+//         if (err) {
+//           console.error('Error patching product data:', err);
+//           reject(err);
+//         } else {
+//           console.log('Product data patched successfully');
+//           console.log('Results:', results);
+//           resolve(results);
+//         }
+//       }
+//     );
+//   });
+// }
+
+
+
+// DELETE method for products
 function deleteProduct(id) {
   return new Promise((resolve, reject) => {
     const deleteProductQuery = 'DELETE FROM products WHERE id = ?';
@@ -142,4 +206,5 @@ module.exports = {
   updateProduct,
   patchProduct,
   deleteProduct,
+  getProductById
 };
