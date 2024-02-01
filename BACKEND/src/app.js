@@ -21,7 +21,9 @@ productsModel.createProductTable();
 
 // Cookie verification middleware
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token
+  // Extract token from the Authorization header
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Split header value and get the token part
 
   if (!token) {
     // No token found, redirect to login page
