@@ -467,8 +467,11 @@ const HomePage = () => {
       const response = await fetch('http://localhost:5000/add-products', {
         method: 'POST',
         headers: {
+          Accept : 'application/json',
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`
         },
+        credentials:'include',
         body: formData,
       });
 
