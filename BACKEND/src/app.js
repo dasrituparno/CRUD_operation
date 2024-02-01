@@ -21,7 +21,9 @@ productsModel.createProductTable();
 
 // Cookie verification middleware
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token
+  // Extract token from the Authorization header
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Split header value and get the token part
 
   if (!token) {
     // No token found, redirect to login page
@@ -184,7 +186,7 @@ app.get('/products', verifyToken, async (req, res) => {
 });
 
 // POST method for adding products with image upload
-app.post('/add-products', uploads.single('productImage'), async (req, res) => {
+app.post('/add-products', uploads.single('productImage'), verifyToken, async (req, res) => {
   
   try {
     const { product_name, product_description } = req.body;
@@ -201,7 +203,7 @@ app.post('/add-products', uploads.single('productImage'), async (req, res) => {
 });
 
 // Update a product by ID
-app.put('/products/:id', async (req, res) => {
+app.put('/products/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { product_name, product_description } = req.body;
@@ -219,7 +221,7 @@ app.put('/products/:id', async (req, res) => {
 });
 
 // Partially update a product by ID
-app.patch('/products/:id', async (req, res) => {
+app.patch('/products/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
@@ -239,7 +241,7 @@ app.patch('/products/:id', async (req, res) => {
 
 
 // Delete a product by ID
-app.delete('/products/:id', async (req, res) => {
+app.delete('/products/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -255,7 +257,7 @@ app.delete('/products/:id', async (req, res) => {
 });
 
 // Retrieve a single product by ID
-app.get('/products/:id', async (req, res) => {
+app.get('/products/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
 
