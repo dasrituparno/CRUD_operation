@@ -84,9 +84,41 @@ function getProductById(id) {
 }
 
 
+// // PUT method for products
+// function updateProduct(id, productName, productDescription, productImage) {
+//   return new Promise((resolve, reject) => {
+//     const updateProductQuery = `
+//       UPDATE products
+//       SET product_name = ?, product_description = ?, product_image = ?
+//       WHERE id = ?
+//     `;
+
+//     // Check if productImage is provided, otherwise set it to null or some default value
+//     const image = productImage ? productImage.filename : null;
+
+//     connection.query(
+//       updateProductQuery,
+//       [productName, productDescription, image, id], // Use image variable
+//       (err, results) => {
+//         if (err) {
+//           console.error('Error updating product data:', err);
+//           reject(err);
+//         } else {
+//           console.log('Product data updated successfully');
+//           resolve(results);
+//         }
+//       }
+//     );
+//   });
+// }
+
+
+
+
 // PUT method for products
 function updateProduct(id, productName, productDescription, productImage) {
   return new Promise((resolve, reject) => {
+    console.log('Received productImage:', productImage); // Log the received productImage
     const updateProductQuery = `
       UPDATE products
       SET product_name = ?, product_description = ?, product_image = ?
@@ -95,6 +127,8 @@ function updateProduct(id, productName, productDescription, productImage) {
 
     // Check if productImage is provided, otherwise set it to null or some default value
     const image = productImage ? productImage.filename : null;
+
+    console.log('Using image:', image); // Log the image being used in the query
 
     connection.query(
       updateProductQuery,
@@ -111,6 +145,7 @@ function updateProduct(id, productName, productDescription, productImage) {
     );
   });
 }
+
 
 
 // PATCH method for products
