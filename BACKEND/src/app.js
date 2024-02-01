@@ -18,9 +18,10 @@ app.use(cors());
 studentsModel.createStudentTable();
 productsModel.createProductTable();
 
+
 // Cookie verification middleware
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies.token
 
   if (!token) {
     // No token found, redirect to login page
@@ -62,7 +63,7 @@ app.post("/register", async (req, res) => {
     await studentsModel.insertStudent(name, email, phone, address, hashedPassword, hashedPassword); // Wait for student data insertion
 
     // Redirect to the login page after successful registration
-    res.status(201).send({ name, email, phone, address, redirectTo: "/login" });
+    res.status(201).send({ name, email, phone, address});
   } catch (e) {
     console.error(e);
     res.status(400).send(e.message || e);
@@ -102,10 +103,7 @@ app.put("/students/:id", async (req, res) => {
   }
 });
 
-
-
 // update using patch method
-
 app.patch("/students/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -163,7 +161,7 @@ app.post("/login", async (req, res) => {
       res.cookie("token", token, { httpOnly: true });
 
       // Redirect to the products page after successful login
-      res.status(200).send({ message: "Successfully logged in", redirectTo: "/products" });
+      res.status(200).send({ message: "Successfully logged in", token:token });
     } else {
       res.status(401).send("Invalid email or password");
     }
@@ -186,7 +184,8 @@ app.get('/products', verifyToken, async (req, res) => {
 });
 
 // POST method for adding products with image upload
-app.post('/products', uploads.single('productImage'), async (req, res) => {
+app.post('/add-products', uploads.single('productImage'), async (req, res) => {
+  
   try {
     const { product_name, product_description } = req.body;
     const productImage = req.file.filename; // Assuming multer saves the filename
