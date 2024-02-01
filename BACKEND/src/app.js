@@ -23,17 +23,17 @@ productsModel.createProductTable();
 const verifyToken = (req, res, next) => {
   // Extract token from the Authorization header
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Split header value and get the token part
+  const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    // No token found, redirect to login page
-    return res.status(401).redirect('/login');
+    // No token found, send 401 Unauthorized response
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      // Invalid token, redirect to login page
-      return res.status(401).redirect('/login');
+      // Invalid token, send 401 Unauthorized response
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
     // Token is valid, proceed to the next middleware or route handler
@@ -186,7 +186,7 @@ app.get('/products', verifyToken, async (req, res) => {
 });
 
 // POST method for adding products with image upload
-app.post('/add-products', uploads.single('productImage'), verifyToken, async (req, res) => {
+app.post('/add-products', verifyToken, uploads.single('productImage'), async (req, res) => {
   
   try {
     const { product_name, product_description } = req.body;
