@@ -21,14 +21,12 @@ productsModel.createProductTable();
 
 // Cookie verification middleware
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies.token
 
   if (!token) {
     // No token found, redirect to login page
     return res.status(401).redirect('/login');
   }
-
-  const token = authHeader.split(' ')[1];
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
@@ -42,7 +40,6 @@ const verifyToken = (req, res, next) => {
     next();
   });
 };
-
 
 // Routing
 app.get("/", (req, res) => {
@@ -187,7 +184,8 @@ app.get('/products', verifyToken, async (req, res) => {
 });
 
 // POST method for adding products with image upload
-app.post('/products', uploads.single('productImage'), async (req, res) => {
+app.post('/add-products', uploads.single('productImage'), async (req, res) => {
+  
   try {
     const { product_name, product_description } = req.body;
     const productImage = req.file.filename; // Assuming multer saves the filename
@@ -203,11 +201,11 @@ app.post('/products', uploads.single('productImage'), async (req, res) => {
 });
 
 // Update a product by ID
-app.put('/products/:id', verifyToken, async (req, res) => {
+app.put('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { product_name, product_description } = req.body;
-    const product_Image = req.file.filename= req.body; // Assuming multer saves the filename
+    const product_Image = req.file.filename; // Assuming multer saves the filename
 
     await productsModel.createProductTable(); // Wait for product table creation
 
@@ -220,35 +218,8 @@ app.put('/products/:id', verifyToken, async (req, res) => {
   }
 });
 
-
-// // Update a product by ID
-// app.put('/products/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { product_name, product_description } = req.body;
-//     const product_Image = req.file.filename; // Assuming multer saves the filename
-
-//     console.log('Received request to update product with ID:', id);
-//     console.log('Received product details:', { product_name, product_description, product_Image });
-
-//     await productsModel.createProductTable(); // Wait for product table creation
-
-//     console.log('Calling updateProduct function with ID:', id);
-//     const updatedProduct = await productsModel.updateProduct(id, product_name, product_description, product_Image); // Wait for product data update
-
-//     console.log('Product updated successfully:', updatedProduct);
-//     res.status(200).send(updatedProduct);
-//   } catch (error) {
-//     console.error('Error updating product:', error);
-//     res.status(500).send(error.message || error);
-//   }
-// });
-
-
-
-
 // Partially update a product by ID
-app.patch('/products/:id',verifyToken, async (req, res) => {
+app.patch('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
@@ -268,7 +239,7 @@ app.patch('/products/:id',verifyToken, async (req, res) => {
 
 
 // Delete a product by ID
-app.delete('/products/:id', verifyToken, async (req, res) => {
+app.delete('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -284,7 +255,7 @@ app.delete('/products/:id', verifyToken, async (req, res) => {
 });
 
 // Retrieve a single product by ID
-app.get('/products/:id', verifyToken, async (req, res) => {
+app.get('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
