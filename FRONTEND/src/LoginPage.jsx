@@ -157,7 +157,7 @@ function LoginPage() {
 
     if (errors.email === '' && errors.password === '') {
       try {
-        const response = await fetch('http://localhost:5000/login', {
+        const response = await fetch('http://127.0.0.1:5000/login', {
           method: 'POST',
           headers: {
           ContentType: 'application/json',
@@ -165,7 +165,7 @@ function LoginPage() {
           body: JSON.stringify(values),
           credentials: 'include',
         });
-
+        console.log(response);
         if (!response.ok) {
           throw new Error('Login failed');
         }
@@ -210,7 +210,7 @@ function LoginPage() {
             />
             {errors.password && <span className='error'>{errors.password}</span>}
           </div>
-          <button type='submit' className='button'>Log in</button>
+          <button type='submit' className='button' onClick={handleSubmit}>Log in</button>
           <p>Don't Have Account?</p>
           <Link to="/signup" className='link'>Sign Up Here</Link>
         </form>

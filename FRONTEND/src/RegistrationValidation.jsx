@@ -18,10 +18,10 @@ function Validation(values) {
       errors.email = "";
     }
   
-    if (values.number === "") {
-      errors.number = "Number should not be empty";
+    if (values.phone === "") {
+      errors.phone = "Number should not be empty";
     } else {
-      errors.number = "";
+      errors.phone = "";
     }
     if (values.address === "") {
       errors.address = "enter your address";
