@@ -10,6 +10,8 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
+
+app.use( express.static('uploads'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
