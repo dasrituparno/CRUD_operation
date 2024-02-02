@@ -301,7 +301,7 @@
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
-//           'Authorization' :`Bearer ${}`
+//           'Authorization' :`Bearer ${authToken}`
 //         },
 //         body: formData,
 //       });
@@ -437,10 +437,14 @@
 
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import "./HomePage.css"
 
 const HomePage = () => {
+
   const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({ product_name: '', product_description: '', productImage: null });
+  const [newProduct, setNewProduct] = useState({ product_name: '', product_description: '', productImage: null});
+  const [editingProductId, setEditingProductId] = useState(null);
+  const [error, setError] = useState(null); // State for handling errors
 
   useEffect(() => {
     fetchProducts();
@@ -449,15 +453,75 @@ const HomePage = () => {
   const fetchProducts = async () => {
     try {
       const response = await fetch('http://localhost:5000/products');
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
       const data = await response.json();
       setProducts(data);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Error fetching products:', error);
+
+    }
+  };
+
+  const handleEdit = (productId) => {
+    setEditingProductId(productId);
+    const productToEdit = products.find((product) => product.id === productId);
+    setNewProduct({ ...productToEdit });
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      let formData = new FormData();
+      formData.append('product_name', newProduct.product_name);
+      formData.append('product_description', newProduct.product_description);
+      formData.append('productImage', newProduct.productImage);
+
+      const response = await fetch(`http://localhost:5000/products/${newProduct.id}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (response.ok) {
+        fetchProducts();
+        setEditingProductId(null);
+        setNewProduct({ product_name: '', product_description: '', productImage: null });
+      } else {
+        console.error('Failed to save edit');
+        setError('Failed to save edit. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error saving edit:', error);
+      setError('Error saving edit. Please try again.');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProductId(null);
+    setNewProduct({ product_name: '', product_description: '', productImage: null });
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/products/${productId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        fetchProducts();
+      } else {
+        console.error('Failed to delete product');
+        setError('Failed to delete product. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      setError('Error deleting product. Please try again.');
     }
   };
 
   const handleAddProduct = async () => {
     const authToken = Cookies.get("authToken");
+
     let formData = new FormData();
     formData.append('product_name', newProduct.product_name);
     formData.append('product_description', newProduct.product_description);
@@ -467,11 +531,8 @@ const HomePage = () => {
       const response = await fetch('http://localhost:5000/add-products', {
         method: 'POST',
         headers: {
-          Accept : 'application/json',
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`
         },
-        credentials:'include',
         body: formData,
       });
 
@@ -480,9 +541,11 @@ const HomePage = () => {
         setNewProduct({ product_name: '', product_description: '', productImage: null });
       } else {
         console.error('Failed to add product');
+        setError('Failed to add product. Please try again.');
       }
     } catch (error) {
       console.error('Error adding product:', error);
+      setError('Error adding product. Please try again.');
     }
   };
 
@@ -492,39 +555,47 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <h1>Add Product</h1>
-      <form>
-        <div>
-          <label htmlFor="productName">Product Name:</label>
-          <input
-            type="text"
-            id="productName"
-            value={newProduct.product_name}
-            onChange={(e) => setNewProduct({ ...newProduct, product_name: e.target.value })}
-          />
-        </div>
-        <div>
-          <label htmlFor="productDescription">Product Description:</label>
-          <textarea
-            id="productDescription"
-            value={newProduct.product_description}
-            onChange={(e) => setNewProduct({ ...newProduct, product_description: e.target.value })}
-          />
-        </div>
-        <div>
-          <label htmlFor="productPhoto">Product Photo:</label>
-          <input
-            type="file"
-            id="productPhoto"
-            onChange={handlePhotoChange}
-          />
-        </div>
-        <button type="button" onClick={handleAddProduct}>Add Product</button>
-      </form>
+    <>
+      {error && <div className="error-message">{error}</div>}
 
-      <h1>Product List</h1>
       <div>
+        <form>
+          <div>
+            <label htmlFor="productName">Product Name:</label>
+            <input
+              type="text"
+              id="productName"
+              value={newProduct.product_name}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, product_name: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="productDescription">Product Description:</label>
+            <textarea
+              id="productDescription"
+              value={newProduct.product_description}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, product_description: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label htmlFor="productPhoto">Product Photo:</label>
+            <input
+              type="file"
+              id="productPhoto"
+              onChange={handlePhotoChange}
+            />
+          </div>
+          <button type="button" onClick={handleAddProduct}>Add Product</button>
+        </form>
+      </div>
+
+      <div>
+        <h1>Product List</h1>
+
         <table>
           <thead>
             <tr>
@@ -532,21 +603,65 @@ const HomePage = () => {
               <th>Product Name</th>
               <th>Product Description</th>
               <th>Product Photo</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
                 <td>{product.id}</td>
-                <td>{product.product_name}</td>
-                <td>{product.product_description}</td>
-                <td><img src={`http://localhost:5000/uploads/${product.productImage}`} alt={product.product_name} /></td>
+                <td>
+                  {editingProductId === product.id ? (
+                    <input
+                      type="text"
+                      value={newProduct.product_name}
+                      onChange={(e) => setNewProduct({ ...newProduct, product_name: e.target.value })}
+                    />
+                  ) : (
+                    product.product_name
+                  )}
+                </td>
+                <td>
+                  {editingProductId === product.id ? (
+                    <textarea
+                      value={newProduct.product_description}
+                      onChange={(e) => setNewProduct({ ...newProduct, product_description: e.target.value })}
+                    />
+                  ) : (
+                    product.product_description
+                  )}
+                </td>
+                <td>
+                  {editingProductId === product.id ? (
+                    <input
+                      type="file"
+                      onChange={handlePhotoChange}
+                    />
+                  ) : (
+                    <div className="product-photo">
+                      {product.productImage && <img src={`http://localhost:5000/uploads/${product.productImage}`} alt={product.product_name} />}
+                    </div>
+                  )}
+                </td>
+                <td>
+                  {editingProductId === product.id ? (
+                    <>
+                      <button onClick={handleSaveEdit}>Save</button>
+                      <button onClick={handleCancelEdit}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={() => handleEdit(product.id)}>Edit</button>
+                      <button className='delete' onClick={() => handleDelete(product.id)}>Delete</button>
+                    </>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   );
 };
 
