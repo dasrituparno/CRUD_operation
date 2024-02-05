@@ -225,7 +225,7 @@ const HomePage = () => {
                        <img
                        src={`http://localhost:5000/uploads/${product.product_image.replace('uploads')}`}
                        alt={product.product_name} 
-                     />
+                        />
                       )}
 
                     </div>
