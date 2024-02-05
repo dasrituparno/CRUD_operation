@@ -5,7 +5,7 @@ import "./HomePage.css"
 const HomePage = () => {
 
   const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({ product_name: '', product_description: '', productImage: null});
+  const [newProduct, setNewProduct] = useState({ product_name: '', product_description: '', productImage: null });
   const [editingProductId, setEditingProductId] = useState(null);
   const [error, setError] = useState(null); // State for handling errors
 
@@ -42,20 +42,20 @@ const HomePage = () => {
   };
 
   const handleSaveEdit = async (e) => {
-     e.preventDefault();
+    e.preventDefault();
     try {
       let formData = new FormData();
       formData.append('product_name', newProduct.product_name);
       formData.append('product_description', newProduct.product_description);
       formData.append('productImage', newProduct.productImage);
-      
+
       const authToken = Cookies.get("authToken");
       const response = await fetch(`http://localhost:5000/products/${newProduct.id}`, {
         method: 'PUT',
-        headers:{
+        headers: {
           Authorization: `Bearer ${authToken}`,
         },
-        
+
         body: formData,
       });
 
@@ -83,7 +83,7 @@ const HomePage = () => {
       const authToken = Cookies.get("authToken");
       const response = await fetch(`http://localhost:5000/products/${productId}`, {
         method: 'DELETE',
-        headers:{
+        headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
@@ -100,7 +100,7 @@ const HomePage = () => {
   };
 
   const handleAddProduct = async () => {
-    
+
 
     let formData = new FormData();
     formData.append('product_name', newProduct.product_name);
@@ -212,8 +212,8 @@ const HomePage = () => {
                     product.product_description
                   )}
                 </td>
+
                 <td>
-                  
                   {editingProductId === product.id ? (
                     <input
                       type="file"
@@ -221,16 +221,15 @@ const HomePage = () => {
                     />
                   ) : (
                     <div className="product-photo">
-                     {product.productImage && (
-                       <img
-                       src={`http://localhost:5000/uploads/${product.product_image.replace('uploads')}`}
-                       alt={product.product_name} 
-                        />
-                      )}
-
+                      {/* {product.productImage ? ( */}
+                      <img
+                        src={`http://localhost:5000/${product.productImage}`}
+                        alt={product.product_name}
+                      />
                     </div>
                   )}
                 </td>
+
                 <td>
                   {editingProductId === product.id ? (
                     <>
