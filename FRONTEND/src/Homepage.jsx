@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import "./HomePage.css"
 
 const HomePage = () => {
+  // const imgUrl = "http://localhost:5000/";
 
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({ product_name: '', product_description: '', productImage: null });
@@ -188,64 +189,66 @@ const HomePage = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product.id}>
-                <td>{product.id}</td>
-                <td>
-                  {editingProductId === product.id ? (
-                    <input
-                      type="text"
-                      value={newProduct.product_name}
-                      onChange={(e) => setNewProduct({ ...newProduct, product_name: e.target.value })}
-                    />
-                  ) : (
-                    product.product_name
-                  )}
-                </td>
-                <td>
-                  {editingProductId === product.id ? (
-                    <textarea
-                      value={newProduct.product_description}
-                      onChange={(e) => setNewProduct({ ...newProduct, product_description: e.target.value })}
-                    />
-                  ) : (
-                    product.product_description
-                  )}
-                </td>
-
-                <td>
-                  {editingProductId === product.id ? (
-                    <input
-                      type="file"
-                      onChange={handlePhotoChange}
-                    />
-                  ) : (
-                    <div className="product-photo">
-                      {/* {product.productImage ? ( */}
-                      <img
-                        src={`http://localhost:5000/${product.productImage}`}
-                        alt={product.product_name}
+            {products.map((product) => {
+              return (
+                <tr key={product.id}>
+                  <td>{product.id}</td>
+                  <td>
+                    {editingProductId === product.id ? (
+                      <input
+                        type="text"
+                        value={newProduct.product_name}
+                        onChange={(e) => setNewProduct({ ...newProduct, product_name: e.target.value })}
                       />
-                    </div>
-                  )}
-                </td>
+                    ) : (
+                      product.product_name
+                    )}
+                  </td>
+                  <td>
+                    {editingProductId === product.id ? (
+                      <textarea
+                        value={newProduct.product_description}
+                        onChange={(e) => setNewProduct({ ...newProduct, product_description: e.target.value })}
+                      />
+                    ) : (
+                      product.product_description
+                    )}
+                  </td>
 
-                <td>
-                  {editingProductId === product.id ? (
-                    <>
-                      <button onClick={handleSaveEdit}>Save</button>
-                      <button onClick={handleCancelEdit}>Cancel</button>
-                    </>
-                  ) : (
-                    <>
-                      <button onClick={() => handleEdit(product.id)}>Edit</button>
-                      <button className='delete' onClick={() => handleDelete(product.id)}>Delete</button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
+                  <td>
+                    {editingProductId === product.id ? (
+                      <input
+                        type="file"
+                        onChange={handlePhotoChange}
+                      />
+                    ) : (
+                      <div className="product-photo">
+                        <img
+                          src={"http://localhost:5000/" + product.product_image}
+                          alt={product.product_name}
+                        />
+                      </div>
+                    )}
+                  </td>
+
+                  <td>
+                    {editingProductId === product.id ? (
+                      <>
+                        <button onClick={handleSaveEdit}>Save</button>
+                        <button onClick={handleCancelEdit}>Cancel</button>
+                      </>
+                    ) : (
+                      <>
+                        <button onClick={() => handleEdit(product.id)}>Edit</button>
+                        <button className='delete' onClick={() => handleDelete(product.id)}>Delete</button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
+
         </table>
       </div>
     </>
