@@ -213,6 +213,7 @@ const HomePage = () => {
                   )}
                 </td>
                 <td>
+                  
                   {editingProductId === product.id ? (
                     <input
                       type="file"
